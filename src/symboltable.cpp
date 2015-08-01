@@ -1,6 +1,5 @@
 // symboltable.cpp : implementation of the symbol table
 //   author : Douglas Jones
-//   modified by : members of the Venture group
 #include <stdio.h>
 #include <stdint.h>
 #include <string.h>

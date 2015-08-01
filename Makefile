@@ -84,9 +84,6 @@ $(OBJ)/statements.o: $(SRC)/statements.cpp
 $(OBJ)/types.o: $(SRC)/types.cpp
 	$(CC) $(CFLAGS) $(SRC)/types.cpp -o $(OBJ)/types.o
 
-$(OBJ)/codegenerator.o: $(SRC)/codegenerator.cpp
-	$(CC) $(CFLAGS) $(SRC)/codegenerator.cpp -o $(OBJ)/codegenerator.o
-
 
 # clean up 
 clean:

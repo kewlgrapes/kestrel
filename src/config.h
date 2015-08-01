@@ -1,26 +1,13 @@
 // config.h : configuration options for Kestrel compiler
-//   author : Douglas Jones
-//   modified by : members of the Venture group
-
-// locale
-#define LOC_FLAGCHAR '-'
-
-
-// code generation
-#define CODE_MINREG 3
-#define CODE_MAXREG 12
-#define CODE_NUMREGS 10
-
+//   author : Nick Becker
 
 // string pool
 #define POOL_SIZE 40000     // 40 KB
-
 
 // symbol table
 #define SYMBOL_HASH 64
 #define SYMBOL_SIZE 5001
 #define SYMBOL_INVALID -1
-
 
 // keywords
 #define KEY_REHASH_SIZE 64

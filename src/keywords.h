@@ -1,6 +1,5 @@
 // keywords.h : user interface specifications for the keyword table
 //   author : Ken Jakubzak
-//   modified by : members of the Venture group
 
 #ifndef EXTERN
   #define EXTERN extern

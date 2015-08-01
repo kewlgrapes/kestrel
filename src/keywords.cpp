@@ -1,6 +1,5 @@
 // keywords.cpp : extends symbol table with a keyword table
 //   author : Ken Jakubzak
-//   modified by : members of the Venture group
 #include <stdio.h>
 #include <stdint.h>
 

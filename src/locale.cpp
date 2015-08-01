@@ -1,6 +1,5 @@
 // locale.cpp : locale management for Kestrel compiler
 //   author : Douglas Jones
-//   modified by : members of the Venture group
 #include <stdlib.h>
 #include <stdint.h>
 #include <stdio.h>

@@ -1,5 +1,4 @@
 // punctuation.h : user interface specifications for the punctuation table
-//   author : members of the Venture group
 
 #ifndef EXTERN
   #define EXTERN extern

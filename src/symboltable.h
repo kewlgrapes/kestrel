@@ -1,6 +1,5 @@
 // symboltable.h : user interface specifications for the symbol table.
 //   author : Douglas Jones
-//   modified by : members of the Venture group
 
 #ifndef EXTERN
   #define EXTERN extern

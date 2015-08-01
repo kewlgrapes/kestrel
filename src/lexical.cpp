@@ -1,6 +1,6 @@
 // lexical.cpp : Kestrel lexical analyzer
 //   author : D.W.Jones
-//   modifed by : members of the Venture group 
+//   modifed by : Nick Becker
 #include <stdio.h>
 #include <stdlib.h>
 #include <stdint.h>
@@ -23,7 +23,6 @@ int ch_next;  // the character following the current character
                      ch_next = getc( infile ); \
                      lex_col += 1; }
 // note: it is parse_whitespace()'s job to increment line count / reset col
-
 
 // a mapping of characters (ASCII7) to their types
 static const char_type char_class[256] = {

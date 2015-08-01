@@ -1,6 +1,6 @@
 // stringpool.h : user interface specifications for the string pool.
 //   author : Douglas Jones
-//   modified by : members of the Venture group
+//   modified by : Nick Becker
 
 #ifndef EXTERN
 	#define EXTERN extern

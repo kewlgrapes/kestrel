@@ -1,6 +1,5 @@
 // locale.h : interface specification and configuration for locale.c
 //   author : Douglas Jones
-//   modified by : members of the Venture group
 
 // locale settings //
 extern const char *LOC_DEFAULTNAME;

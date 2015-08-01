@@ -1,5 +1,4 @@
 // stringpool.cpp : Kestrel string pool management
-//  authors : members of the Venture group
 #include <stdlib.h>
 #include <stdio.h>
 #include <stdint.h>
