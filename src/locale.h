@@ -1,31 +1,37 @@
-// locale.h : interface specs for error reporting / locale settings
-//   author : Douglas JOnes
-//   modified : Nick Becker
+// locale.h : interface specification and configuration for locale.c
+//   author : Douglas Jones
+//   modified by : members of the Venture group
 
-// compiler name
+// locale settings //
 extern const char *LOC_DEFAULTNAME;
 
-// to encode help messages
+// to encode help messages for various topics
 typedef enum help_code {
   HLP_DEFAULT
 } help_code;
 
-// to encode error messages
-typedef enum error_code {
-  // string pool
-  ER_POOLBOUNDS,
-  ER_POOLFULL,
+// print help information for various topics
+void print_help(help_code topic);
+void print_help();
 
-  // symbol table
-  ER_HASHFULL,
+// error management //
+
+// an enumeration type to encode the error messages
+typedef enum error_code {
+  // code generation
+  ER_BADOUTFILE,
 
   // punctuation
   ER_INVOPEN,
 
-  // keywords
-  // ???
+  // string pool errors
+  ER_POOLBOUNDS,
+  ER_POOLFULL,
 
-  // lexical
+  // symbol table errors
+  ER_HASHFULL,
+
+  // lexical errors
   ER_BADFILE,
   ER_LEXEME,
   ER_LEXSTRNL,
@@ -36,21 +42,27 @@ typedef enum error_code {
   ER_LEXDIGITBAD,
   ER_LEXBADRADIX,
   ER_LEXEOF,
+
+  // kestrel errors
+  ER_NOINPUT,
+  ER_OPTION,
+  ER_MULTOUT
 } error_code;
 
-// print help information for topic
-void print_help(help_code topic);
+// fatal errors
+
+// output error message to stderr and terminate
+void error_fatal( error_code er, const char *origin=LOC_DEFAULTNAME );
+
+void error_fatal( error_code er, lexeme lex, const char *origin=LOC_DEFAULTNAME );
+
+void error_undeclared( lexeme lex, const char *origin=LOC_DEFAULTNAME );
 
 // warnings
-void error_warn(error_code er, const char *origin=LOC_DEFAULTNAME);
 
-void error_warn(error_code er, lexeme lex, const char *origin=LOC_DEFAULTNAME);
+// output error message to stderr
+void error_warn( error_code er, lexeme lex, const char *origin=LOC_DEFAULTNAME );
+
+void error_warn( error_code er, const char *origin=LOC_DEFAULTNAME );
 
 void expected_but_got(const char *exp, lexeme lex, const char *origin=LOC_DEFAULTNAME);
-
-// fatal errors
-void error_fatal(error_code er, const char *origin=LOC_DEFAULTNAME);
-
-void error_fatal(error_code er, lexeme lex, const char *origin=LOC_DEFAULTNAME);
-
-void error_undeclared(lexeme lex, const char *origin=LOC_DEFAULTNAME);
