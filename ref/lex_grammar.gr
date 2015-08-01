@@ -1,0 +1,68 @@
+> <kestrel_program>
+
+<kestrel_program> ::= { { <white_space> } <lexeme> }
+
+# WHITESPACE
+<white_space> ::= <space> | <tab> | <newline> | <comment> | <break>
+
+<comment> ::= "--" { <anything_but_newline> } <newline>
+
+# LEXEME
+<lexeme> ::= <identifier> | <number> | <string> | 
+               <punctuation> | <end_of_file>
+
+# IDENTIFIER
+<identifier> ::= <letter> { <letter> | <digit> }
+
+# NUMBERS
+<number> ::= <decimal_number> [ '#' <extended_number> ]
+
+<decimal_number> ::= <digit> { <digit> }
+
+<extended_number> ::= <extended_digit> { <extended_digit> }
+
+<extended_digit> ::= <digit> | <letter>
+
+# STRINGS
+<string> ::= '"' { <anything_but_"> } '"' | "'" { <anything_but_'> } "'"
+
+# CHARACTER SET
+<tab>     ::= HT
+
+<newline> ::= LF
+
+<break>   ::= VT | FF | CR
+
+<space>   ::= " "
+
+<digit> ::= "0" | "1" | "2" | "3" | "4" | "5" | "6" | "7" | "8" | "9"
+
+<letter> ::=  "a" | "A" | "b" | "B" | "c" | "C" | "d" | "D" | "e" | "E" |
+              "f" | "F" | "g" | "G" | "h" | "H" | "i" | "I" | "j" | "J" |
+              "k" | "K" | "l" | "L" | "m" | "M" | "n" | "N" | "o" | "O" |
+              "p" | "P" | "q" | "Q" | "r" | "R" | "s" | "S" | "t" | "T" |
+              "u" | "U" | "v" | "V" | "w" | "W" | "x" | "X" | "y" | "Y" |
+              "z" | "Z"
+
+<punctuation> ::= ";" | "=" | ":" | "(" | "[" | "{" | ")" | "]" | "}" |
+                  "," | "@" | ".." | "<>" | ">" | ">=" | "<" | "<=" | 
+                  "+" | "-" | "*" | "/" | "&" | "|" | "~" | "."
+
+<anything>       ::= NUL -- 00
+                 ...
+                  |      -- FF
+
+<anything but "> ::= NUL -- 00
+                 ...
+                  |  "!" -- 21
+                  |  "#" -- 23
+                 ...
+                  |      -- FF
+
+# KEYWORDS
+<reserved_word> ::= "end" | "const" | "type" | "exception" | "var" | 
+                    "procedure" | "function" | "private" | "external" | 
+                    "enum" | "array" | "of" | "record" | "if" | "then" | 
+                    "else" | "select" | "case" | "while" | "do" |
+                    "until" | "for" | "in" | "try" | "handle" | "raise" | 
+                    "null"

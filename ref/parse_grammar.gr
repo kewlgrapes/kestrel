@@ -1,0 +1,134 @@
+> <kestrel_program>
+/""
+
+<kestrel_program> ::= <block> <end_of_file>
+
+<block> ::= { <block_element> [ ";" ] }
+
+<block_element> ::= <declaration> | <statement>
+
+# DECLARATIONS
+<declaration> ::= <identifier> ":" [ "private" ] <entity>
+
+<entity> ::= <constant_constructor>
+          |  <type_constructor>
+          |  <exception_constructor>
+          |  <variable_constructor>
+          |  <procedure_constructor>
+          |  <function_constructor>
+
+<constant_constructor> ::= "const" <expression>
+
+<type_constructor> ::= "type" <type>
+
+<exception_constructor> ::= "exception"
+
+<variable_constructor> ::= "var" <type>
+
+<procedure_constructor> ::= "procedure" [ <formal_parameters> ] <body>
+
+<function_constructor> ::= "function" <type> [ <formal_parameters> ] <body>
+
+<body> ::= "external" | <block> "end"
+
+<formal_parameters> ::= "(" <parameter> { [","] <parameter> } ")"
+                     |  "[" <parameter> { [","] <parameter> } "]"
+                     |  "{" <parameter> { [","] <parameter> } "}"
+
+<parameter> ::= <identifier> ":" <parameter_constructor>
+
+<parameter_constructor> ::= "var" <type>
+                         |  "const" <type>
+
+# TYPES
+<type> ::= <reference> | <enumeration> | <subrange> | <pointer>
+        |  <array> | <record>
+
+<enumeration> ::= "enum" "(" <identifier> { [","] <identifier> } ")"
+               |  "enum" "[" <identifier> { [","] <identifier> } "]"
+               |  "enum" "{" <identifier> { [","] <identifier> } "}"
+
+<subrange> ::= <expression> ".." <expression>
+
+<pointer> ::= "@" <type>
+
+<array> ::= "array" <type> "of" <type>
+
+<record> ::= "record" <block> "end"
+
+# STATEMENTS
+<statement> ::= <if> | <case> | <loop> | <handler> | <raise> 
+             |  <procedure_call> | <assignment>
+
+<if> ::= "if" <expression> [ "then" ] 
+             <block> 
+         ["else"
+             <block>]
+         "end"
+
+<case> ::= "select" <expression> [ "in" ]
+         { "case" <case_label> { [ "," ] <case_label> } ":"
+              <block>
+         }
+         [ "else"
+              <block> ]
+           "end"
+
+<case_label> ::= <expression> [ ".." <expression> ]
+
+<loop> ::= <while_loop> | <until_loop> | <for_loop>
+
+<while_loop> ::= "while" <expression> [ "do" ] <block> "end"
+
+<until_loop> ::= "do" <block> "until" <expression>
+
+<for_loop> ::= "for" <identifier> "in" <type> [ "do" ] <block> "end"
+
+<handler> ::= "try" 
+                  <block>
+            { "handle" <reference> { [ "," ] <reference> } ":"
+                  <block>
+            }
+            [ "else"
+                   <block>
+            ]
+              "end"
+
+<raise> ::= "raise" <reference>
+
+<procedure_call> ::= <reference>
+
+<assignment> ::= <reference> "=" <expression>
+
+# EXPRESSIONS
+<expression> ::= <comparand> [ <comparing_operator> <comparand> ]
+
+<comparand> ::= <term> { <adding_operator> <term> }
+
+<term> ::= <factor> { <multiplying_operator> <factor> }
+
+<comparing_operator> ::= "=" | "<>" | ">" | ">=" | "<" | "<="
+
+<adding_operator> ::= "+" | "-" | "|"
+
+<multiplying_operator> ::= "*" | "/" | "&"
+
+<factor> ::= [ "-" | "~" ] <value>
+
+<value> ::= <number> | <string_constant> | "null" 
+         | <reference> | <subexpression>
+
+<subexpression> ::= "(" <expression> ")"
+                 |  "[" <expression> "]"
+                 |  "{" <expression> "}"
+
+<string_constant> ::= <string> { <string> | <expression> }
+
+<reference> ::= <identifier>
+             |  <reference> "@"
+             |  <reference> "." <identifier>
+             |  <reference> <parameter_or_index>
+
+<parameter_or_index> ::= "(" <expression> { "," <expression> } ")"
+                      |  "[" <expression> { "," <expression> } "]"
+                      |  "{" <expression> { "," <expression> } "}"

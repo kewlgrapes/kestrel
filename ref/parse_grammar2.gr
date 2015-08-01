@@ -1,0 +1,166 @@
+> <kestrel_program>
+/ ""
+
+<kestrel_program> ::= <block> <end_of_file>
+<block> ::= <block-a>
+<block-a> ::= ""
+           |  <block_element> <block-a-a> <block-a>
+<block_element> ::= <declaration>
+                 |  <statement>
+<declaration> ::= <identifier> ":" <declaration-a> <entity>
+<declaration-a> ::= ""
+                 |  "private"
+<entity> ::= <constant_constructor>
+          |  <type_constructor>
+          |  <exception_constructor>
+          |  <variable_constructor>
+          |  <procedure_constructor>
+          |  <function_constructor>
+<constant_constructor> ::= "const" <expression>
+<expression> ::= <comparand> <expression-a>
+<comparand> ::= <term> <comparand-a>
+<term> ::= <factor> <term-a>
+<factor> ::= <factor-a> <value>
+<factor-a> ::= ""
+            |  "-"
+            |  "~"
+<value> ::= <number>
+         |  <string_constant>
+         |  "null"
+         |  <reference>
+         |  <subexpression>
+<string_constant> ::= <string> <string_constant-a>
+<string_constant-a> ::= ""
+                     |  <string> <string_constant-a>
+                     |  <expression> <string_constant-a>
+<reference> ::= <identifier>
+             |  <reference> "@"
+             |  <reference> "." <identifier>
+             |  <reference> <parameter_or_index>
+<parameter_or_index> ::= "(" <expression> <parameter_or_index-a> ")"
+                      |  "[" <expression> <parameter_or_index-b> "]"
+                      |  "{" <expression> <parameter_or_index-c> "}"
+<parameter_or_index-a> ::= ""
+                        |  "," <expression> <parameter_or_index-a>
+<parameter_or_index-b> ::= ""
+                        |  "," <expression> <parameter_or_index-b>
+<parameter_or_index-c> ::= ""
+                        |  "," <expression> <parameter_or_index-c>
+<subexpression> ::= "(" <expression> ")"
+                 |  "[" <expression> "]"
+                 |  "{" <expression> "}"
+<term-a> ::= ""
+          |  <multiplying_operator> <factor> <term-a>
+<multiplying_operator> ::= "*"
+                        |  "/"
+                        |  "&"
+<comparand-a> ::= ""
+               |  <adding_operator> <term> <comparand-a>
+<adding_operator> ::= "+"
+                   |  "-"
+                   |  "|"
+<expression-a> ::= ""
+                |  <comparing_operator> <comparand>
+<comparing_operator> ::= "="
+                      |  "<>"
+                      |  ">"
+                      |  ">="
+                      |  "<"
+                      |  "<="
+<type_constructor> ::= "type" <type>
+<type> ::= <reference>
+        |  <enumeration>
+        |  <subrange>
+        |  <pointer>
+        |  <array>
+        |  <record>
+<enumeration> ::= "enum" "(" <identifier> <enumeration-a> ")"
+               |  "enum" "[" <identifier> <enumeration-b> "]"
+               |  "enum" "{" <identifier> <enumeration-c> "}"
+<enumeration-a> ::= ""
+                 |  [","] <identifier> <enumeration-a>
+<enumeration-b> ::= ""
+                 |  [","] <identifier> <enumeration-b>
+<enumeration-c> ::= ""
+                 |  [","] <identifier> <enumeration-c>
+<subrange> ::= <expression> ".." <expression>
+<pointer> ::= "@" <type>
+<array> ::= "array" <type> "of" <type>
+<record> ::= "record" <block> "end"
+<exception_constructor> ::= "exception"
+<variable_constructor> ::= "var" <type>
+<procedure_constructor> ::= "procedure" <procedure_constructor-a> <body>
+<procedure_constructor-a> ::= ""
+                           |  <formal_parameters>
+<formal_parameters> ::= "(" <parameter> <formal_parameters-a> ")"
+                     |  "[" <parameter> <formal_parameters-b> "]"
+                     |  "{" <parameter> <formal_parameters-c> "}"
+<parameter> ::= <identifier> ":" <parameter_constructor>
+<parameter_constructor> ::= "var" <type>
+                         |  "const" <type>
+<formal_parameters-a> ::= ""
+                       |  [","] <parameter> <formal_parameters-a>
+<formal_parameters-b> ::= ""
+                       |  [","] <parameter> <formal_parameters-b>
+<formal_parameters-c> ::= ""
+                       |  [","] <parameter> <formal_parameters-c>
+<body> ::= "external"
+        |  <block> "end"
+<function_constructor> ::= "function" <type> <function_constructor-a> <body>
+<function_constructor-a> ::= ""
+                          |  <formal_parameters>
+<statement> ::= <if>
+             |  <case>
+             |  <loop>
+             |  <handler>
+             |  <raise>
+             |  <procedure_call>
+             |  <assignment>
+<if> ::= "if" <expression> <if-a> <block> "else" <block> "end"
+<if-a> ::= ""
+        |  "then"
+<case> ::= "select" <expression> <case-a> <case-b> <case-c> "end"
+<case-a> ::= ""
+          |  "in"
+<case-b> ::= ""
+          |  "case" <case_label> <case-b-a> ":" <block> <case-b>
+<case_label> ::= <expression> <case_label-a>
+<case_label-a> ::= ""
+                |  ".." <expression>
+<case-b-a> ::= ""
+            |  <case-b-a-a> <case_label> <case-b-a>
+<case-b-a-a> ::= ""
+              |  ","
+<case-c> ::= ""
+          |  "else" <block>
+<loop> ::= <while_loop>
+        |  <until_loop>
+        |  <for_loop>
+<while_loop> ::= "while" <expression> <while_loop-a> <block> "end"
+<while_loop-a> ::= ""
+                |  "do"
+<until_loop> ::= "do" <block> "until" <expression>
+<for_loop> ::= "for" <identifier> "in" <type> <for_loop-a> <block> "end"
+<for_loop-a> ::= ""
+              |  "do"
+<handler> ::= "try" <block> <handler-a> <handler-b> "end"
+<handler-a> ::= ""
+             |  "handle" <reference> <handler-a-a> ":" <block> <handler-a>
+<handler-a-a> ::= ""
+               |  <handler-a-a-a> <reference> <handler-a-a>
+<handler-a-a-a> ::= ""
+                 |  ","
+<handler-b> ::= ""
+             |  "else" <block>
+<raise> ::= "raise" <reference>
+<procedure_call> ::= <reference>
+<assignment> ::= <reference> "=" <expression>
+<block-a-a> ::= ""
+             |  ";"
+
+# terminals:   "" <end_of_file> ";" <identifier> ":" "private" "const" "type"
+#              "exception" "var" "procedure" "function" "external" "end" "("
+#              [","] ")" "[" "]" "{" "}" "enum" ".." "@" "array" "of" "record"
+#              "if" "then" "else" "select" "in" "case" "," "while" "do" "until"
+#              "for" "try" "handle" "raise" "=" "<>" ">" ">=" "<" "<=" "+" "-"
+#              "|" "*" "/" "&" "~" <number> "null" <string> "."

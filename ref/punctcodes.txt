@@ -1,0 +1,23 @@
+followed these instructions to make a perfect hash
+http://www.drdobbs.com/architecture-and-design/generating-perfect-hash-functions/184404506
+
+38  &  PT_AND     0   0 0
+40  (  PT_LPAREN  2   0 2
+41  )  PT_RPAREN  3   0 3
+42  *  PT_TIMES   4   0 4
+43  +  PT_PLUS    5   0 5
+44  ,  PT_COMMA   6   0 6
+45  -  PT_MINUS   7   0 7
+46  .  PT_DOT     8   0 8
+47  /  PT_DIV     9   0 9
+58  :  PT_COLON   20  2 0
+59  ;  PT_SEMIC   21  2 1
+60  <  PT_LT      22  2 2
+61  =  PT_EQUALS  23  2 3
+62  >  PT_GT      24  2 4
+64  @  PT_ATSIGN  26  2 6
+91  [  PT_LBRAKT  53  5 3
+93  ]  PT_RBRAKT  55  5 5
+123 {  PT_LBRACE  85  8 5
+124 |  PT_OR      86  8 6
+125 }  PT_RBRACE  87  8 7

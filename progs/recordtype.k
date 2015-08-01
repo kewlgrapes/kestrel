@@ -1,0 +1,1 @@
+record g: var d; 

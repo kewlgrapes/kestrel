@@ -1,0 +1,240 @@
+> <kestrel_program>
+/ ""
+
+<kestrel_program> ::= <block> <end_of_file>
+# start set:   {
+
+<block> ::= { <block_element> [ ";" ] }
+# start set:   {
+# follow set:  <end_of_file> "end" "else" } ] { "until"
+
+<block_element> ::= <declaration>
+                 |  <statement>
+# start set:   <identifier> "if" "select" "try" "raise" "while" "do" "for"
+# follow set:  [
+
+<declaration> ::= <identifier> ":" [ "private" ] <entity>
+# start set:   <identifier>
+# follow set:  [
+
+<entity> ::= <constant_constructor>
+          |  <type_constructor>
+          |  <exception_constructor>
+          |  <variable_constructor>
+          |  <procedure_constructor>
+          |  <function_constructor>
+# start set:   "const" "type" "exception" "var" "procedure" "function"
+# follow set:  [
+
+<constant_constructor> ::= "const" <expression>
+# start set:   "const"
+# follow set:  [
+
+<expression> ::= <comparand> [ <comparing_operator> <comparand> ]
+# start set:   [ "~"
+# follow set:  ".." [ ] } ")" "]" "}" { "of"
+
+<comparand> ::= <term> { <adding_operator> <term> }
+# start set:   [ "~"
+# follow set:  [ ]
+
+<term> ::= <factor> { <multiplying_operator> <factor> }
+# start set:   [ "~"
+# follow set:  { }
+
+<factor> ::= [ "-"
+          |  "~" ] <value>
+# start set:   [ "~"
+# follow set:  { }
+
+<value> ::= <number>
+         |  <string_constant>
+         |  "null"
+         |  <reference>
+         |  <subexpression>
+# start set:   <identifier> <number> "null" "(" "[" "{" <string> [ "~"
+# follow set:  { }
+
+<string_constant> ::= <string> { <string>
+                   |  <expression> }
+# start set:   <string> [ "~"
+# follow set:  { }
+
+<reference> ::= <identifier>
+             |  <reference> "@"
+             |  <reference> "." <identifier>
+             |  <reference> <parameter_or_index>
+# start set:   <identifier>
+# follow set:  "@" "." "(" "[" "{" { } "=" [ "of"
+
+<parameter_or_index> ::= "(" <expression> { "," <expression> } ")"
+                      |  "[" <expression> { "," <expression> } "]"
+                      |  "{" <expression> { "," <expression> } "}"
+# start set:   "(" "[" "{"
+# follow set:  "@" "." "(" "[" "{" { } "=" [ "of"
+
+<subexpression> ::= "(" <expression> ")"
+                 |  "[" <expression> "]"
+                 |  "{" <expression> "}"
+# start set:   "(" "[" "{"
+# follow set:  { }
+
+<multiplying_operator> ::= "*"
+                        |  "/"
+                        |  "&"
+# start set:   "*" "/" "&"
+# follow set:  [ "~"
+
+<adding_operator> ::= "+"
+                   |  "-"
+                   |  "|"
+# start set:   "+" "-" "|"
+# follow set:  [ "~"
+
+<comparing_operator> ::= "="
+                      |  "<>"
+                      |  ">"
+                      |  ">="
+                      |  "<"
+                      |  "<="
+# start set:   "=" "<>" ">" ">=" "<" "<="
+# follow set:  [ "~"
+
+<type_constructor> ::= "type" <type>
+# start set:   "type"
+# follow set:  [
+
+<type> ::= <reference>
+        |  <enumeration>
+        |  <subrange>
+        |  <pointer>
+        |  <array>
+        |  <record>
+# start set:   <identifier> "enum" "@" "array" "record" [ "~"
+# follow set:  [ "of" { }
+
+<enumeration> ::= "enum" "(" <identifier> { [","] <identifier> } ")"
+               |  "enum" "[" <identifier> { [","] <identifier> } "]"
+               |  "enum" "{" <identifier> { [","] <identifier> } "}"
+# start set:   "enum"
+# follow set:  [ "of" { }
+
+<subrange> ::= <expression> ".." <expression>
+# start set:   [ "~"
+# follow set:  [ "of" { }
+
+<pointer> ::= "@" <type>
+# start set:   "@"
+# follow set:  [ "of" { }
+
+<array> ::= "array" <type> "of" <type>
+# start set:   "array"
+# follow set:  [ "of" { }
+
+<record> ::= "record" <block> "end"
+# start set:   "record"
+# follow set:  [ "of" { }
+
+<exception_constructor> ::= "exception"
+# start set:   "exception"
+# follow set:  [
+
+<variable_constructor> ::= "var" <type>
+# start set:   "var"
+# follow set:  [
+
+<procedure_constructor> ::= "procedure" [ <formal_parameters> ]
+# start set:   "procedure"
+# follow set:  [
+
+<formal_parameters> ::= "(" <parameter> { [","] <parameter> } ")"
+                     |  "[" <parameter> { [","] <parameter> } "]"
+                     |  "{" <parameter> { [","] <parameter> } "}"
+# start set:   "(" "[" "{"
+# follow set:  ]
+
+<parameter> ::= <identifier> ":" <parameter_constructor>
+# start set:   <identifier>
+# follow set:  { }
+
+<parameter_constructor> ::= "var" <type>
+                         |  "const" <type>
+# start set:   "var" "const"
+# follow set:  { }
+
+<function_constructor> ::= "function" <type> [ <formal_parameters> ] <body>
+# start set:   "function"
+# follow set:  [
+
+<body> ::= "external"
+        |  <block> "end"
+# start set:   "external" {
+# follow set:  [
+
+<statement> ::= <if>
+             |  <case>
+             |  <loop>
+             |  <handler>
+             |  <raise>
+             |  <procedure_call>
+             |  <assignment>
+# start set:   <identifier> "if" "select" "try" "raise" "while" "do" "for"
+# follow set:  [
+
+<if> ::= "if" <expression> [ "then" ] <block> "else" <block> "end"
+# start set:   "if"
+# follow set:  [
+
+<case> ::= "select" <expression> [ "in" ] { "case" <case_label> { [ "," ]
+           <case_label> } ":" <block> } [ "else" <block> ] "end"
+# start set:   "select"
+# follow set:  [
+
+<case_label> ::= <expression> [ ".." <expression> ]
+# start set:   [ "~"
+# follow set:  { }
+
+<loop> ::= <while_loop>
+        |  <until_loop>
+        |  <for_loop>
+# start set:   "while" "do" "for"
+# follow set:  [
+
+<while_loop> ::= "while" <expression> [ "do" ] <block> "end"
+# start set:   "while"
+# follow set:  [
+
+<until_loop> ::= "do" <block> "until" <expression>
+# start set:   "do"
+# follow set:  [
+
+<for_loop> ::= "for" <identifier> "in" <type> [ "do" ] <block> "end"
+# start set:   "for"
+# follow set:  [
+
+<handler> ::= "try" <block> { "handle" <reference> { [ "," ] <reference> } ":"
+              <block> } [ "else" <block> ] "end"
+# start set:   "try"
+# follow set:  [
+
+<raise> ::= "raise" <reference>
+# start set:   "raise"
+# follow set:  [
+
+<procedure_call> ::= <reference>
+# start set:   <identifier>
+# follow set:  [
+
+<assignment> ::= <reference> "=" <expression>
+# start set:   <identifier>
+# follow set:  [
+
+
+# terminals:   <end_of_file> { [ ";" ] } <identifier> ":" "private" "const"
+#              "type" "exception" "var" "procedure" "function" "external" "end"
+#              "(" [","] ")" "[" "]" "{" "}" "enum" ".." "@" "array" "of"
+#              "record" "if" "then" "else" "select" "in" "case" "," "while" "do"
+#              "until" "for" "try" "handle" "raise" "=" "<>" ">" ">=" "<" "<="
+#              "+" "-" "|" "*" "/" "&" "~" <number> "null" <string> "."
+
+# unused terminals:  ""

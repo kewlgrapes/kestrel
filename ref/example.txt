@@ -1,0 +1,23 @@
+Declaration *parse_proc_constructor(Block *b) {
+  list<Parameter*> params;
+
+  // should make sure lex_this is a '(' '[' or '{' first
+  punct_type c = punct_closing_symbol(lex_this.value);
+  lex_advance();
+
+  while (lex_is(lex_this, IDENT)) {
+    Parameter *p = parse_parameter();
+    params->push_back(p);
+    if (lex_is(lex_this, PUNCT, PT_COMMA)) lex_advance();
+  }
+
+  if (lex_is(lex_this, KEYWORD, KEY_EXTERN))
+    // do something
+  else
+    Block *body = parse_block();
+
+  lex_force(PUNCT, c);
+  lex_advance();
+
+  // construct the ProcDeclaration and return it
+}

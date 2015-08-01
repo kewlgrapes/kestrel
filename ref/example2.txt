@@ -1,0 +1,6 @@
+while (lex_is_type(IDENT) || lex_is(lex_this, PUNCT, PT_COMMA) {
+  if (lex_is(lex_this, PUNCT, PT_COMMA)
+    lex_advance();
+  lex_force(IDENT);
+  parse_reference();
+}

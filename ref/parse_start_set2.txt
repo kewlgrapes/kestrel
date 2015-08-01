@@ -1,0 +1,458 @@
+> <kestrel_program>
+
+<kestrel_program> ::= <block-a> <end_of_file>
+                   |  <end_of_file>
+# start set:   <end_of_file> <identifier> "raise" "if" "select" "try" "while"
+#              "do" "for"
+
+<block-a> ::= <block_element> ";" <block-a>
+           |  <block_element> ";"
+           |  <block_element>
+           |  <block_element> <block-a>
+# start set:   <identifier> "raise" "if" "select" "try" "while" "do" "for"
+# follow set:  <end_of_file> "end" "else" "handle" "case" "until"
+
+<block_element> ::= <declaration>
+                 |  <statement>
+# start set:   <identifier> "raise" "if" "select" "try" "while" "do" "for"
+# follow set:  ";" <identifier> "raise" "if" "select" "try" "while" "do" "for"
+#              <end_of_file> "end" "else" "handle" "case" "until"
+
+<declaration> ::= <identifier> ":" "private" <entity>
+               |  <identifier> ":" <entity>
+# start set:   <identifier>
+# follow set:  ";" <identifier> "raise" "if" "select" "try" "while" "do" "for"
+#              <end_of_file> "end" "else" "handle" "case" "until"
+
+<entity> ::= "const" <expression>
+          |  "type" <type>
+          |  "exception"
+          |  "var" <type>
+          |  <procedure_constructor>
+          |  <function_constructor>
+# start set:   "const" "type" "exception" "var" "procedure" "function"
+# follow set:  ";" <identifier> "raise" "if" "select" "try" "while" "do" "for"
+#              <end_of_file> "end" "else" "handle" "case" "until"
+
+<expression> ::= <comparand> <comparing_operator> <comparand>
+              |  <comparand>
+# start set:   "-" "~" <number> "null" <identifier> <string> "(" "[" "{"
+# follow set:  ".." ")" "]" "}" <string> "-" "~" <number> "null" <identifier>
+#              "(" "[" "{" "," "then" "else" "raise" "if" "select" "try" "while"
+#              "do" "for" "in" "end" "case" ";" <end_of_file> "handle" "until"
+#              "of" "external" "*" "/" "&" "+" "|" "=" "<>" ">" ">=" "<" "<="
+#              ":" [","]
+
+<comparand> ::= <term> <comparand-a>
+             |  <term>
+# start set:   "-" "~" <number> "null" <identifier> <string> "(" "[" "{"
+# follow set:  "=" "<>" ">" ">=" "<" "<=" ".." ")" "]" "}" <string> "-" "~"
+#              <number> "null" <identifier> "(" "[" "{" "," "then" "else"
+#              "raise" "if" "select" "try" "while" "do" "for" "in" "end" "case"
+#              ";" <end_of_file> "handle" "until" "of" "external" "*" "/" "&"
+#              "+" "|" ":" [","]
+
+<term> ::= <factor> <term-a>
+        |  <factor>
+# start set:   "-" "~" <number> "null" <identifier> <string> "(" "[" "{"
+# follow set:  "-" "+" "|" "=" "<>" ">" ">=" "<" "<=" ".." ")" "]" "}" <string>
+#              "~" <number> "null" <identifier> "(" "[" "{" "," "then" "else"
+#              "raise" "if" "select" "try" "while" "do" "for" "in" "end" "case"
+#              ";" <end_of_file> "handle" "until" "of" "external" "*" "/" "&"
+#              ":" [","]
+
+<factor> ::= <factor-a> <value>
+          |  <value>
+# start set:   "-" "~" <number> "null" <identifier> <string> "(" "[" "{"
+# follow set:  "*" "/" "&" "-" "+" "|" "=" "<>" ">" ">=" "<" "<=" ".." ")" "]"
+#              "}" <string> "~" <number> "null" <identifier> "(" "[" "{" ","
+#              "then" "else" "raise" "if" "select" "try" "while" "do" "for" "in"
+#              "end" "case" ";" <end_of_file> "handle" "until" "of" "external"
+#              ":" [","]
+
+<factor-a> ::= "-"
+            |  "~"
+# start set:   "-" "~"
+# follow set:  <number> "null" <identifier> <string> "(" "[" "{"
+
+<value> ::= <number>
+         |  <string_constant>
+         |  "null"
+         |  <reference>
+         |  <subexpression>
+# start set:   <number> "null" <identifier> <string> "(" "[" "{"
+# follow set:  "*" "/" "&" "-" "+" "|" "=" "<>" ">" ">=" "<" "<=" ".." ")" "]"
+#              "}" <string> "~" <number> "null" <identifier> "(" "[" "{" ","
+#              "then" "else" "raise" "if" "select" "try" "while" "do" "for" "in"
+#              "end" "case" ";" <end_of_file> "handle" "until" "of" "external"
+#              ":" [","]
+
+<string_constant> ::= <string> <string_constant-a>
+                   |  <string>
+# start set:   <string>
+# follow set:  "*" "/" "&" "-" "+" "|" "=" "<>" ">" ">=" "<" "<=" ".." ")" "]"
+#              "}" <string> "~" <number> "null" <identifier> "(" "[" "{" ","
+#              "then" "else" "raise" "if" "select" "try" "while" "do" "for" "in"
+#              "end" "case" ";" <end_of_file> "handle" "until" "of" "external"
+#              ":" [","]
+
+<string_constant-a> ::= <string> <string_constant-a>
+                     |  <string>
+                     |  <expression> <string_constant-a>
+                     |  <expression>
+# start set:   <string> "-" "~" <number> "null" <identifier> "(" "[" "{"
+# follow set:  "*" "/" "&" "-" "+" "|" "=" "<>" ">" ">=" "<" "<=" ".." ")" "]"
+#              "}" <string> "~" <number> "null" <identifier> "(" "[" "{" ","
+#              "then" "else" "raise" "if" "select" "try" "while" "do" "for" "in"
+#              "end" "case" ";" <end_of_file> "handle" "until" "of" "external"
+#              ":" [","]
+
+<reference> ::= <identifier>
+             |  <reference> "@"
+             |  <reference> "." <identifier>
+             |  <reference> <parameter_or_index>
+# start set:   <identifier>
+# follow set:  "=" "@" "." "(" "[" "{" "," <identifier> ":" ";" "raise" "if"
+#              "select" "try" "while" "do" "for" <end_of_file> "end" "else"
+#              "handle" "case" "until" "of" "external" "*" "/" "&" "-" "+" "|"
+#              "<>" ">" ">=" "<" "<=" ".." ")" "]" "}" <string> "~" <number>
+#              "null" "then" "in" [","]
+
+<parameter_or_index> ::= "(" <expression> <parameter_or_index-a> ")"
+                      |  "(" <expression> ")"
+                      |  "[" <expression> <parameter_or_index-b> "]"
+                      |  "[" <expression> "]"
+                      |  "{" <expression> <parameter_or_index-c> "}"
+                      |  "{" <expression> "}"
+# start set:   "(" "[" "{"
+# follow set:  "=" "@" "." "(" "[" "{" "," <identifier> ":" ";" "raise" "if"
+#              "select" "try" "while" "do" "for" <end_of_file> "end" "else"
+#              "handle" "case" "until" "of" "external" "*" "/" "&" "-" "+" "|"
+#              "<>" ">" ">=" "<" "<=" ".." ")" "]" "}" <string> "~" <number>
+#              "null" "then" "in" [","]
+
+<parameter_or_index-a> ::= "," <expression> <parameter_or_index-a>
+                        |  "," <expression>
+# start set:   ","
+# follow set:  ")"
+
+<parameter_or_index-b> ::= "," <expression> <parameter_or_index-b>
+                        |  "," <expression>
+# start set:   ","
+# follow set:  "]"
+
+<parameter_or_index-c> ::= "," <expression> <parameter_or_index-c>
+                        |  "," <expression>
+# start set:   ","
+# follow set:  "}"
+
+<subexpression> ::= "(" <expression> ")"
+                 |  "[" <expression> "]"
+                 |  "{" <expression> "}"
+# start set:   "(" "[" "{"
+# follow set:  "*" "/" "&" "-" "+" "|" "=" "<>" ">" ">=" "<" "<=" ".." ")" "]"
+#              "}" <string> "~" <number> "null" <identifier> "(" "[" "{" ","
+#              "then" "else" "raise" "if" "select" "try" "while" "do" "for" "in"
+#              "end" "case" ";" <end_of_file> "handle" "until" "of" "external"
+#              ":" [","]
+
+<term-a> ::= <multiplying_operator> <factor> <term-a>
+          |  <multiplying_operator> <factor>
+# start set:   "*" "/" "&"
+# follow set:  "-" "+" "|" "=" "<>" ">" ">=" "<" "<=" ".." ")" "]" "}" <string>
+#              "~" <number> "null" <identifier> "(" "[" "{" "," "then" "else"
+#              "raise" "if" "select" "try" "while" "do" "for" "in" "end" "case"
+#              ";" <end_of_file> "handle" "until" "of" "external" "*" "/" "&"
+#              ":" [","]
+
+<multiplying_operator> ::= "*"
+                        |  "/"
+                        |  "&"
+# start set:   "*" "/" "&"
+# follow set:  "-" "~" <number> "null" <identifier> <string> "(" "[" "{"
+
+<comparand-a> ::= <adding_operator> <term> <comparand-a>
+               |  <adding_operator> <term>
+# start set:   "-" "+" "|"
+# follow set:  "=" "<>" ">" ">=" "<" "<=" ".." ")" "]" "}" <string> "-" "~"
+#              <number> "null" <identifier> "(" "[" "{" "," "then" "else"
+#              "raise" "if" "select" "try" "while" "do" "for" "in" "end" "case"
+#              ";" <end_of_file> "handle" "until" "of" "external" "*" "/" "&"
+#              "+" "|" ":" [","]
+
+<adding_operator> ::= "+"
+                   |  "-"
+                   |  "|"
+# start set:   "-" "+" "|"
+# follow set:  "-" "~" <number> "null" <identifier> <string> "(" "[" "{"
+
+<comparing_operator> ::= "="
+                      |  "<>"
+                      |  ">"
+                      |  ">="
+                      |  "<"
+                      |  "<="
+# start set:   "=" "<>" ">" ">=" "<" "<="
+# follow set:  "-" "~" <number> "null" <identifier> <string> "(" "[" "{"
+
+<type> ::= <reference>
+        |  <enumeration>
+        |  <expression> ".." <expression>
+        |  "@" <type>
+        |  "array" <type> "of" <type>
+        |  <record>
+# start set:   <identifier> "@" "array" "enum" "record" "-" "~" <number> "null"
+#              <string> "(" "[" "{"
+# follow set:  "of" "(" "[" "{" "end" "external" <identifier> "raise" "if"
+#              "select" "try" "while" "do" "for" ";" <end_of_file> "else"
+#              "handle" "case" "until" [","] ")" "]" "}"
+
+<enumeration> ::= "enum" "(" <identifier> <enumeration-a> ")"
+               |  "enum" "(" <identifier> ")"
+               |  "enum" "[" <identifier> <enumeration-b> "]"
+               |  "enum" "[" <identifier> "]"
+               |  "enum" "{" <identifier> <enumeration-c> "}"
+               |  "enum" "{" <identifier> "}"
+# start set:   "enum"
+# follow set:  "of" "(" "[" "{" "end" "external" <identifier> "raise" "if"
+#              "select" "try" "while" "do" "for" ";" <end_of_file> "else"
+#              "handle" "case" "until" [","] ")" "]" "}"
+
+<enumeration-a> ::= [","] <identifier> <enumeration-a>
+                 |  [","] <identifier>
+# start set:   [","]
+# follow set:  ")"
+
+<enumeration-b> ::= [","] <identifier> <enumeration-b>
+                 |  [","] <identifier>
+# start set:   [","]
+# follow set:  "]"
+
+<enumeration-c> ::= [","] <identifier> <enumeration-c>
+                 |  [","] <identifier>
+# start set:   [","]
+# follow set:  "}"
+
+<record> ::= "record" <block-a> "end"
+          |  "record" "end"
+# start set:   "record"
+# follow set:  "of" "(" "[" "{" "end" "external" <identifier> "raise" "if"
+#              "select" "try" "while" "do" "for" ";" <end_of_file> "else"
+#              "handle" "case" "until" [","] ")" "]" "}"
+
+<procedure_constructor> ::= "procedure" <formal_parameters> <body>
+                         |  "procedure" <body>
+# start set:   "procedure"
+# follow set:  ";" <identifier> "raise" "if" "select" "try" "while" "do" "for"
+#              <end_of_file> "end" "else" "handle" "case" "until"
+
+<formal_parameters> ::= "(" <identifier> ":" <parameter_constructor>
+                        <formal_parameters-a> ")"
+                     |  "(" <identifier> ":" <parameter_constructor> ")"
+                     |  "[" <identifier> ":" <parameter_constructor>
+                        <formal_parameters-b> "]"
+                     |  "[" <identifier> ":" <parameter_constructor> "]"
+                     |  "{" <identifier> ":" <parameter_constructor>
+                        <formal_parameters-c> "}"
+                     |  "{" <identifier> ":" <parameter_constructor> "}"
+# start set:   "(" "[" "{"
+# follow set:  "end" "external" <identifier> "raise" "if" "select" "try" "while"
+#              "do" "for"
+
+<parameter_constructor> ::= "var" <type>
+                         |  "const" <type>
+# start set:   "var" "const"
+# follow set:  [","] ")" "]" "}"
+
+<formal_parameters-a> ::= [","] <identifier> ":" <parameter_constructor>
+                          <formal_parameters-a>
+                       |  [","] <identifier> ":" <parameter_constructor>
+# start set:   [","]
+# follow set:  ")"
+
+<formal_parameters-b> ::= [","] <identifier> ":" <parameter_constructor>
+                          <formal_parameters-b>
+                       |  [","] <identifier> ":" <parameter_constructor>
+# start set:   [","]
+# follow set:  "]"
+
+<formal_parameters-c> ::= [","] <identifier> ":" <parameter_constructor>
+                          <formal_parameters-c>
+                       |  [","] <identifier> ":" <parameter_constructor>
+# start set:   [","]
+# follow set:  "}"
+
+<body> ::= "external"
+        |  <block-a> "end"
+        |  "end"
+# start set:   "end" "external" <identifier> "raise" "if" "select" "try" "while"
+#              "do" "for"
+# follow set:  ";" <identifier> "raise" "if" "select" "try" "while" "do" "for"
+#              <end_of_file> "end" "else" "handle" "case" "until"
+
+<function_constructor> ::= "function" <type> <formal_parameters> <body>
+                        |  "function" <type> <body>
+# start set:   "function"
+# follow set:  ";" <identifier> "raise" "if" "select" "try" "while" "do" "for"
+#              <end_of_file> "end" "else" "handle" "case" "until"
+
+<statement> ::= <if>
+             |  <case>
+             |  <loop>
+             |  <handler>
+             |  "raise" <reference>
+             |  <reference>
+             |  <reference> "=" <expression>
+# start set:   "raise" <identifier> "if" "select" "try" "while" "do" "for"
+# follow set:  ";" <identifier> "raise" "if" "select" "try" "while" "do" "for"
+#              <end_of_file> "end" "else" "handle" "case" "until"
+
+<if> ::= "if" <expression> "then" <block-a> "else" <block-a> "end"
+      |  "if" <expression> "then" <block-a> "else" "end"
+      |  "if" <expression> "then" "else" "end"
+      |  "if" <expression> "else" "end"
+      |  "if" <expression> <block-a> "else" "end"
+      |  "if" <expression> "then" "else" <block-a> "end"
+      |  "if" <expression> "else" <block-a> "end"
+      |  "if" <expression> <block-a> "else" <block-a> "end"
+# start set:   "if"
+# follow set:  ";" <identifier> "raise" "if" "select" "try" "while" "do" "for"
+#              <end_of_file> "end" "else" "handle" "case" "until"
+
+<case> ::= "select" <expression> "in" <case-b> <case-c> "end"
+        |  "select" <expression> "in" <case-b> "end"
+        |  "select" <expression> "in" "end"
+        |  "select" <expression> "end"
+        |  "select" <expression> <case-b> "end"
+        |  "select" <expression> "in" <case-c> "end"
+        |  "select" <expression> <case-c> "end"
+        |  "select" <expression> <case-b> <case-c> "end"
+# start set:   "select"
+# follow set:  ";" <identifier> "raise" "if" "select" "try" "while" "do" "for"
+#              <end_of_file> "end" "else" "handle" "case" "until"
+
+<case-b> ::= "case" <case_label> <case-b-a> ":" <block-a> <case-b>
+          |  "case" <case_label> <case-b-a> ":" <block-a>
+          |  "case" <case_label> <case-b-a> ":"
+          |  "case" <case_label> ":"
+          |  "case" <case_label> ":" <block-a>
+          |  "case" <case_label> <case-b-a> ":" <case-b>
+          |  "case" <case_label> ":" <case-b>
+          |  "case" <case_label> ":" <block-a> <case-b>
+# start set:   "case"
+# follow set:  "else" "end"
+
+<case_label> ::= <expression> ".." <expression>
+              |  <expression>
+# start set:   "-" "~" <number> "null" <identifier> <string> "(" "[" "{"
+# follow set:  "," "-" "~" <number> "null" <identifier> <string> "(" "[" "{" ":"
+
+<case-b-a> ::= "," <case_label> <case-b-a>
+            |  "," <case_label>
+            |  <case_label>
+            |  <case_label> <case-b-a>
+# start set:   "," "-" "~" <number> "null" <identifier> <string> "(" "[" "{"
+# follow set:  ":"
+
+<case-c> ::= "else" <block-a>
+          |  "else"
+# start set:   "else"
+# follow set:  "end"
+
+<loop> ::= <while_loop>
+        |  <until_loop>
+        |  <for_loop>
+# start set:   "while" "do" "for"
+# follow set:  ";" <identifier> "raise" "if" "select" "try" "while" "do" "for"
+#              <end_of_file> "end" "else" "handle" "case" "until"
+
+<while_loop> ::= "while" <expression> "do" <block-a> "end"
+              |  "while" <expression> "do" "end"
+              |  "while" <expression> "end"
+              |  "while" <expression> <block-a> "end"
+# start set:   "while"
+# follow set:  ";" <identifier> "raise" "if" "select" "try" "while" "do" "for"
+#              <end_of_file> "end" "else" "handle" "case" "until"
+
+<until_loop> ::= "do" <block-a> "until" <expression>
+              |  "do" "until" <expression>
+# start set:   "do"
+# follow set:  ";" <identifier> "raise" "if" "select" "try" "while" "do" "for"
+#              <end_of_file> "end" "else" "handle" "case" "until"
+
+<for_loop> ::= "for" <identifier> "in" <type> "do" <block-a> "end"
+            |  "for" <identifier> "in" <type> "do" "end"
+            |  "for" <identifier> "in" <type> "end"
+            |  "for" <identifier> "in" <type> <block-a> "end"
+# start set:   "for"
+# follow set:  ";" <identifier> "raise" "if" "select" "try" "while" "do" "for"
+#              <end_of_file> "end" "else" "handle" "case" "until"
+
+<handler> ::= "try" <block-a> <handler-a> <handler-b> "end"
+           |  "try" <block-a> <handler-a> "end"
+           |  "try" <block-a> "end"
+           |  "try" "end"
+           |  "try" <handler-a> "end"
+           |  "try" <block-a> <handler-b> "end"
+           |  "try" <handler-b> "end"
+           |  "try" <handler-a> <handler-b> "end"
+# start set:   "try"
+# follow set:  ";" <identifier> "raise" "if" "select" "try" "while" "do" "for"
+#              <end_of_file> "end" "else" "handle" "case" "until"
+
+<handler-a> ::= "handle" <reference> <handler-a-a> ":" <block-a> <handler-a>
+             |  "handle" <reference> <handler-a-a> ":" <block-a>
+             |  "handle" <reference> <handler-a-a> ":"
+             |  "handle" <reference> ":"
+             |  "handle" <reference> ":" <block-a>
+             |  "handle" <reference> <handler-a-a> ":" <handler-a>
+             |  "handle" <reference> ":" <handler-a>
+             |  "handle" <reference> ":" <block-a> <handler-a>
+# start set:   "handle"
+# follow set:  "else" "end"
+
+<handler-a-a> ::= "," <reference> <handler-a-a>
+               |  "," <reference>
+               |  <reference>
+               |  <reference> <handler-a-a>
+# start set:   "," <identifier>
+# follow set:  ":"
+
+<handler-b> ::= "else" <block-a>
+             |  "else"
+# start set:   "else"
+# follow set:  "end"
+
+
+# terminals:   <end_of_file> ";" <identifier> ":" "private" "const" "type"
+#              "exception" "var" "-" "~" <number> "null" <string> "@" "." "("
+#              ")" "[" "]" "{" "}" "," "*" "/" "&" "+" "|" "=" "<>" ">" ">=" "<"
+#              "<=" ".." "array" "of" "enum" [","] "record" "end" "procedure"
+#              "external" "function" "raise" "if" "then" "else" "select" "in"
+#              "case" "while" "do" "until" "for" "try" "handle"
+
+# unused productions
+<block> ::= <block-a>
+<block-a-a> ::= ";"
+<declaration-a> ::= "private"
+<constant_constructor> ::= "const" <expression>
+<type_constructor> ::= "type" <type>
+<exception_constructor> ::= "exception"
+<variable_constructor> ::= "var" <type>
+<expression-a> ::= <comparing_operator> <comparand>
+<subrange> ::= <expression> ".." <expression>
+<pointer> ::= "@" <type>
+<array> ::= "array" <type> "of" <type>
+<procedure_constructor-a> ::= <formal_parameters>
+<parameter> ::= <identifier> ":" <parameter_constructor>
+<function_constructor-a> ::= <formal_parameters>
+<raise> ::= "raise" <reference>
+<procedure_call> ::= <reference>
+<assignment> ::= <reference> "=" <expression>
+<if-a> ::= "then"
+<case-a> ::= "in"
+<case_label-a> ::= ".." <expression>
+<case-b-a-a> ::= ","
+<while_loop-a> ::= "do"
+<for_loop-a> ::= "do"
+<handler-a-a-a> ::= ","
