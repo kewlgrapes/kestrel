@@ -2,7 +2,7 @@
 //   author : Nick Becker
 
 // string pool
-#define POOL_SIZE 40000     // 40 KB
+#define POOL_SIZE 4096
 
 // symbol table
 #define SYMBOL_HASH 64

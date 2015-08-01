@@ -29,7 +29,7 @@ do
     echo .good!
     rm $d
   else
-    echo ".bad! $c differences"
+    echo ".bad! $c differences (check $d)"
   fi
 done
 
