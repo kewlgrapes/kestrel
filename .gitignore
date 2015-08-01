@@ -1,0 +1,5 @@
+testlex
+testparse
+kestrel
+obj/*
+bin/*
