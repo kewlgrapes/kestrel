@@ -5,7 +5,7 @@
 
 # run this from the main project directory or it won't work very well!
 
-TESTDIR="progs"
+TESTDIR="tests"
 TESTLEX="bin/testlex"
 TESTPARSE="bin/testparse"
 
