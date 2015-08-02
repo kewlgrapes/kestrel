@@ -191,7 +191,6 @@ void parse_punctuation() {
         break;
 
       default:
-        punct_this = punct_this;
         break;
     } 
   }
@@ -203,7 +202,7 @@ void parse_punctuation() {
 /////////////////////////////////////////////////////////////////////
 
 // returns integer representation of a character ch
-char digit_of_char(char ch) {
+char digit_of_char(unsigned char ch) {
   // '0' - '9'
   if (lex_is_class(ch, DIG))
     return ch - '0';

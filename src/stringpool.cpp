@@ -20,7 +20,7 @@ void string_put( string_handle h, FILE * f ) {
   }
 
   // write the string to the file
-  while ((_string_pool[h] != '\0') && (h < _string_limit))
+  while ((h < _string_limit) && (_string_pool[h] != '\0'))
     fputc(_string_pool[h++], f);
 }
 

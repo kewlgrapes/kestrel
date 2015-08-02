@@ -1,1 +1,1 @@
-// kestrel.cpp : main program for kestrel compiler
+// kestrel.cpp : main program for the kestrel compiler
