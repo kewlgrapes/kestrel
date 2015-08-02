@@ -21,7 +21,7 @@ LEX_SRCS = $(LEX_DEPS:%=$(SRC)/%.cpp)
 LEX_OBJS = $(LEX_DEPS:%=$(OBJ)/%.o)
 
 # parser dependencies
-PARSE_DEPS = blocks expressions types declarations statements codegenerator
+PARSE_DEPS = blocks expressions types declarations statements
 PARSE_SRCS = $(PARSE_DEPS:%=$(SRC)/%.cpp) 
 PARSE_OBJS = $(PARSE_DEPS:%=$(OBJ)/%.o)
 
