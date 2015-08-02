@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # testall.sh : unit testing for kestrel compiler
-#   author: members of the Venture group
+#   author: Nick Becker
 
 # run this from the main project directory or it won't work very well!
 
@@ -10,9 +10,9 @@ TESTLEX="bin/testlex"
 TESTPARSE="bin/testparse"
 
 # lexical tests
-#   compares output of ./testlex < progs/*.k
+#   compares output of ./testlex < tests/*.k
 #   to the expected output in progs/%.lex
-#   if differences are found, says so and leaves behind progs/%.ldiff
+#   if differences are found, says so and leaves behind tests/%.ldiff
 echo "LEXICAL"
 for l in $TESTDIR/*.lex
 do
@@ -34,8 +34,8 @@ do
 done
 
 # parser tests
-#  compares output of ./testparse < test/*.k
-#  to the expected output in test/%.par
+#  compares output of ./testparse < tests/*.k
+#  to the expected output in tests/%.par
 echo
 echo "PARSER"
 echo "nothing to test yet!"
