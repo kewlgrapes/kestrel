@@ -191,7 +191,6 @@ void parse_punctuation() {
         break;
 
       default:
-        punct_this = punct_this;
         break;
     } 
   }
