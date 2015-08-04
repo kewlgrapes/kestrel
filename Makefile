@@ -87,4 +87,6 @@ $(OBJ)/types.o: $(SRC)/types.cpp
 
 # clean up 
 clean:
-	rm obj/*.o
+	@rm -f obj/*.o
+	@rm -f bin/testlex
+	@echo "Cleaned!"
