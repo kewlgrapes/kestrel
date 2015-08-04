@@ -70,7 +70,7 @@ void lex_open( char * f ) {
     infile = fopen(f, "r");
     // make sure the file was opened successfully
     if (infile == NULL)
-      error_fatal(ER_BADFILE, lex_this);
+      error_fatal(ER_BADFILE);
   }
   
   // read the first two characters
